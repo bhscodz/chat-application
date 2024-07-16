@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{"chatroom "|add:room_name}}</title>
+    <link rel="stylesheet" href="{% static './stylesheets/main.css' %}">
+    
+    <script defer src="{% static './scripts/chat_config.js' %}"></script>
+</head>
+<body>
+    {{ room_name|json_script:"room-name" }}
+    <header style="whitespace:nowrap;">
+        <h1>
+            Chat room
+        </h1>
+    </header>
+    
+    <main class="container">
+        <section class='box green contact_list'>
+        <form action="" style='whitespace:nowrap;'>
+            <input placeholder='serach user'>
+            <button class='classy' type='submit' style='display:inline;'>🔍</button>
+        </form>
+        <ul class='no_margin' style='width:100%; text-align:start;'>
+            <li>server</li>
+            <li>manoj</li>
+            <li>deepesh</li>
+        </ul>
+        </section>
+        <section class="box chatarea">
+
+            <header>
+                <button id='show_contact' class='nav'>🔙</button>
+                <span>person name</span>
+            </header>
+
+        </section>
+    </main>
+    
+        
+</body>
+</html>

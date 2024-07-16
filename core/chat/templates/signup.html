@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{page_name}}</title>
+    <link rel='stylesheet' href={% static './stylesheets/forms.css' %}>
+    <script src="https://kit.fontawesome.com/ac0514ba62.js" crossorigin="anonymous"></script>
+    <script defer src='{% static "./scripts/toast.js" %}'></script>
+    
+</head>
+
+<body>
+    {% if messages %}
+    {% for message in messages %}
+    <ul class='loadmsg' style='display:none;'><li class={{message.tags}}  style='display:none;'>{{message}}</li></ul>
+            
+    {% endfor %}
+    {% endif %}
+    <button popovertargetaction='toggle' popovertarget='noti_board' style=' display:inline-block; z-index: 2;' class='bell' >🔔</button>
+    <div class="form_container">
+        
+        <form action"" method='POST' formnovalidate>
+            {% csrf_token %} 
+            <header>
+                REGISTER ACCOUNT
+            </header>
+            
+            <div><i class="fa-solid fa-user icon"></i>{{form.username}}</div>
+            <div><i class="fa-solid fa-envelope icon"></i>{{form.email}}</div>
+            <div><i class="fa-solid fa-lock icon"></i>{{form.password1}}</div>
+            <div><i class="fa-solid fa-lock icon"></i>{{form.password2}}</div>
+                
+             
+             <button type=submit name='Create User'>submit</button>
+        </form>
+        <p style='text-align:center;'>already have an account?<a href={% url "login" %}>login</a></p>
+    </div>
+    <script>
+        var input_fields=document.querySelectorAll('input');
+        input_fields.forEach((el)=>{el.autocomplete='off'});
+        input_fields[1].placeholder='username...';
+        input_fields[2].placeholder='email...';
+        input_fields[3].placeholder='password1...';
+        input_fields[4].placeholder='password2...';
+        
+    </script>
+</body>
+</html>

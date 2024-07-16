@@ -1,0 +1,106 @@
+*{
+    margin:0px;
+    border:none;
+    padding:0;
+    box-sizing: border-box;
+}
+body{
+    min-height:100vh;
+    background-color: rgb(81, 205, 233);
+    color:white;
+    font-size:30px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.form_container{
+    background-color: rgb(52, 175, 175);
+    box-shadow: 0px 0px 2px 0px white;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:80%;
+    padding:10px;
+}
+form{
+    display:flex;
+    flex-flow: column nowrap;
+    gap:10px;
+    justify-content: center;
+    align-items: center;
+}
+.icon{
+    background-color:orange;
+    display:block;
+    padding:10px;
+    margin: 0;
+}
+form div{
+    width: 100%;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+input{
+    overflow-x: hidden;
+    font-size: 30px;
+    padding: 10px;
+    color:black;
+    height:30px;
+}
+input::placeholder{
+    color: magenta;
+}
+button{
+    font-size: 30px;
+    background-color: white;
+    padding:5px;
+}
+.toast{
+    font-size: 20px;
+    transition:all 500ms 0s ease;
+    background-color: #ffa500;
+}
+.toast.info{
+    background-color: #ffa500;
+    
+}
+.toast.error{
+    background-color: red;
+    
+}
+.toast.success{
+    background-color: green;
+    
+}
+.noti_board{
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: brown;
+    color: aliceblue;
+    position: fixed;
+    top:50px;
+    right: 0;
+    z-index:2;
+    margin: 0;
+}
+.noti_board::before{
+    content:'All 🔔>';
+    color:yellow;
+}
+.noti_board p{
+    border-top:2px solid white;
+    border-bottom:2px solid white;
+}
+
+@media screen and (max-width:400px){
+    form div{
+       justify-content: flex-start; 
+    }
+    form{
+        font-size:30px ;
+    }
+    .toast{
+        font-size: 20px;
+    }
+}

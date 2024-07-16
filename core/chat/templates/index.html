@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>chat app</title>
+        <link rel="stylesheet" href="{% static './stylesheets/main.css' %}">
+        <script defer src="{% static './scripts/main.js' %}"></script>
+        <script defer src='{% static "./scripts/toast.js" %}'></script>
+
+    </head>
+    <body>
+        {% comment %} querrying messages {% endcomment %}
+        {% if messages %}
+        {% for message in messages %}
+        <ul class='loadmsg' style='display:none;'><li class ='{{message.tags}}' style='display:none;'>{{message}}</li></ul> 
+        {% endfor %}
+        {% endif %}
+
+        <header class='main'>
+            <h1 style='margin:10px 0px 10px 0px'>
+                Chat room
+            </h1>
+        <nav class="top_nav">
+        <button popovertargetaction='toggle' popovertarget='noti_board' style=' display:inline-block; z-index: 2;' class='bell' >🔔</button>
+        
+        {% if user.is_authenticated %}
+            <a style='margin:0; display:block; width:fit-content;' href={% url "logout" %}>logout📤</a>
+        {% else %}
+        <a style='margin:0; display:block; width:fit-content;' href={% url "login" %}>login</a>
+        {% endif %}
+
+        <button style='margin:0; display:block;' popovertarget='rooms_joined'>rooms joined</button>
+        
+        <div>🔍<input id='find_chat_room' placeholder='serach_your_chatrooms' name='search_rooms'></div>
+        
+        </nav>
+        </header>
+        <div class='main_page'>
+            <section class='main_section'>
+                <section>
+                    <h3 style='text-align:center;'>Create a room</h3>
+                    <p style='text-align:center;'>
+                        {% if user.is_authenticated %}
+                        <button autofocus class='classy' onclick="show()">
+                        Create a room !
+                        </button>
+                        {% else %}
+                        <button disabled class='classy notallowed' onclick="show()">
+                            Create a room !(login required)
+                        </button>
+                        {% endif %}
+                    </p>
+                
+                    <main class="container">
+                            your chat rooms
+                            <ul></ul>
+                    </main>
+                </section>
+                <hr></hr>
+                <section>
+                    <h3 style='text-align:center;'>
+                        join a chat room<br>
+                    </h3>
+                    <form style='text-align:center; align-item:center' method='POST' action=''>
+                        <input placeholder='enter room name to join' type="text">
+                        <button class='classy'>✅</button>
+                    </form>
+                    <div class="container">status</div>
+                    
+                </section>
+                <article>
+                    <h1>
+                        how to use chatrooms
+                    </h1>
+                    <h2>1. Creating your own chatroom</h2>
+                    <ol>
+                        
+                        <li>login</li>
+                        <li>press create room button or just press enter</li>
+                        <li>you can make a private room as well as a private room,
+                            for private you need to set up private key and share to other memebers<br>
+                            only memebers you have selected can enter the room
+                        </li>
+                        
+                        <li>enter details in dialog box</li>
+                        <li>press submit and you will get a link to chat room,share roomname and start chatting</li>
+                        <li>our chatroom service is very safe we keep your chats encrypted dont store your ip address
+                            and dont share your personal details with <strong>any one!</strong>
+                        </li>
+                        
+                    </ol>
+                    <hr></hr>
+                    <h2>
+                        Joining chat room
+                    </h2>
+                    <ol>
+                        <li>
+                            login
+                        </li>
+                        <li>
+                            click on join chat room
+                        </li>
+                        <li>
+                            enter the name of chatroom *enter the privatekey if room is private
+                        </li>
+                        <li>
+                            you can also find the name and link of chat room from our <a href='#find_chat_room'>find chat room option</a>
+                        </li>
+                    </ol>
+                </article>
+            </section>
+            <section class='side_section'>
+                <p><strong>Your message history</strong></p>
+                <article>
+                    <h3>recent rooms<h3>
+                    <ol class='room_history'></ol>
+                    <h3>members you know<h3>
+                    <ol class='memeber_history'></ol>
+                </article>
+            </section>
+        </div>
+        {% comment %} dialog and popovers {% endcomment %}
+        <div>
+            <dialog >
+                <button class='classy' id="close" aria-label="close" onclick='close()'>X</button>
+                <h1 style='text-align:center;'>Enter your room credentials</h1>
+                <div>
+                    <form method="POST" action="{% url 'createroom' %}">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div>{{field.label_tag}}
+                        {{field}}</div>
+                        {% endfor %}
+                            
+                        <button class='classy' id="confirm" type='submit'>confirm</button>
+                    </form>
+                </div>
+            </dialog>
+        </div>  
+        <div>
+            <ol popover id='rooms_joined'>
+                <li></li>
+            </ol>
+        </div>
+    </body>
+</html>

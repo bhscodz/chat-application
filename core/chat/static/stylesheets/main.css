@@ -1,0 +1,380 @@
+*{
+    box-sizing: border-box;
+    
+}
+body{
+    background-color: black;
+    color:white;
+    font-size:4vh;
+    font-family: cursive;
+}
+
+header{
+    width:100%;
+    background-color: black;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    border-bottom:2px solid green;
+}
+header.main{
+    position:fixed;
+    top:0;
+    z-index: 2;
+    flex-flow: column nowrap;
+}
+nav.top_nav{
+    width: 100%;
+    display:flex;
+    flex-flow:row-reverse nowrap;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+ul{
+    padding: 0;
+    list-style-type: none;
+}
+button.classy{
+    border:none;
+    padding:10px;
+    margin:20px auto 0 auto;
+    color:white;
+    color:aqua;
+    background-color: transparent;
+    border : 2px solid magenta;
+    font-size:25px;
+    font-family:cursive;
+}
+button.classy:active{
+    background-color: green;
+    transform:scale(0.9);
+    transition:all 500ms 0s ease;
+}
+button.classy:hover{
+    box-shadow: 0px 0px 5px 5px green;
+    transition:all 500ms 0s ease;
+}
+
+/* input field */
+#find_chat_room:target{
+    box-shadow:0px 0px 2px 2px green;
+}
+input{
+    color:magenta;
+    border:none;
+    border-bottom:1px solid magenta;
+    font-size:20px;
+    max-width:200px;
+    background-color: transparent;
+}
+input:focus{
+    outline:none;
+}
+
+a{
+    font-size:30px;
+    color:green;
+    max-width:100vw;
+    width:100%;
+}
+
+/* page main section */
+.main_page{
+    display:flex;
+    flex-flow:row-reverse nowrap;
+    justify-content: center;
+    align-items: start;
+    height:100%;
+    transform:translateY(157px);
+    
+}
+section.main_section{
+    overflow-y: auto;
+    font-size: 30px;
+    flex-grow: 1;
+}
+section.side_section{
+    flex-basis: fit-content;
+    overflow-y: auto;
+    flex-grow: 0;
+    display:none;
+    background-color: rgb(22, 21, 21);
+    width:fit-content;
+}
+
+/* containers and box */
+.container{
+    position:relative;
+    overflow-x: auto;
+    width: 90%;
+    background-color: black;
+    margin:40px auto 40px auto;
+    display:flex;
+    flex-flow:row nowrap;
+    align-items: center;
+    gap:0px;
+    flex-grow: 1;
+    padding:5px;
+    border:2px solid green;
+}
+.box{
+    display:flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    min-height:50vh;
+    border-left:3px solid orange;
+}
+.box:nth-child(1){
+    flex-basis: content;
+    background-color: rgb(211, 189, 212);
+}
+.box:nth-child(2){
+    flex-basis: auto;
+    flex-grow: 1;
+}
+
+.box header{
+    width:100%;
+    background-color: rgba(224, 206, 106, 0.323);
+}
+
+
+/* contact list */
+.contact_list ul li{
+    cursor: pointer;
+    border-top:2px solid white;
+    border-bottom:2px solid white;
+}
+.contact_list input{
+    padding-left: 4px;
+    padding-right: 4px;
+    border:none;
+    border-bottom:1px solid magenta;
+    font-size:20px;
+    max-width:200px;
+    background-color: transparent;
+    color:magenta;
+}
+
+.contact_list button{
+    border-radius:50%;
+}
+
+/* chat area */
+.chatarea{
+    background-color: rgba(32, 159, 201, 0.748);
+    display: flex;
+}
+button.nav{
+    display:none;
+    border: 0;
+    margin:0;
+    background-color: transparent;
+    font-size:25px;
+    font-family:cursive;
+}
+button.nav:active{
+    transform:scale(0.8);
+    transition:all 500ms 0s ease;
+}
+/* dialog box and its back drop */
+dialog{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:30px;
+    color:magenta;
+    background-color: black;
+    border:3px solid green;
+}
+dialog form{
+    display:flex;
+    flex-flow:column nowrap;
+    justify-content: center;
+    align-items: start;
+    gap:10px;
+
+}
+dialog::backdrop{
+    background-color:rgba(0,0,0,0.5);
+
+}
+/* dialog box */
+#confirm{
+
+    margin-top:4px;
+}
+#input{
+    border:2px solid rgba(255, 255, 255, 0.152);
+    border-bottom:2px solid magenta;
+    padding: 0;
+    margin:2px;
+    height:57px;
+}
+.toast{
+    margin-top:0;
+    font-size: 15px;
+}
+.toast.info{
+    background-color: orange;
+    transition:all 500ms 0s ease;
+}
+.toast.error{
+    background-color: red;
+    transition:all 500ms 0s ease;
+}
+.toast.success{
+    background-color: green;
+    transition:all 500ms 0s ease;
+}
+.noti_board{
+    font-size: 15px;
+    flex-flow: column nowrap;
+    background-color: brown;
+    color: aliceblue;
+    position: fixed;
+    z-index:2;
+    margin:0px 0px 0px auto;
+    right:30px;
+    top:160px;
+}
+.noti_board::before{
+    content:'All 🔔>';
+    color:yellow;
+}
+.noti_board p{
+    margin:0;
+    padding:0;
+    border-top:2px solid white;
+    border-bottom:2px solid white;
+}
+/* animations */
+.move_away{
+    position:absolute;
+    left:0;
+    width:100%;
+    transform-origin: right;
+    animation:slide_out 1s ease-in-out 0s 1 alternate forwards;
+}
+.move_in{
+    display:flex;
+    transform-origin:left;
+    animation:slide_in 1s ease-in-out 0s 1 alternate forwards;
+}
+@keyframes slide_out {
+    from{
+        transform:scaleX(1);
+    }
+    to{
+        transform:scaleX(0);
+        display:none;
+    }
+}
+@keyframes slide_in {
+    from{
+        flex-grow: 0;
+        transform: scaleX(0);
+    }
+    to{
+        transform: scaleX(1);
+        
+    }
+}
+/* underline on click */
+.underline::after{
+    padding:0;
+    margin:0;
+    width:100%;
+    height:2px;
+    content:'';
+    transform:scaleX(0);
+    background-color: white;
+    transform-origin: center;
+}
+.underline:hover::after{
+    transform: scaleX(1);
+    transition:transform 500ms 0s ease;
+}
+/* basic color */
+.green{
+    color:green
+}
+.no_margin{
+    margin:0;
+}
+.no_display{
+    display:none;
+}
+.notallowed{
+    cursor:not-allowed;
+}
+/* scroll bar */
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: black;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+@media screen and (max-width:800px) {
+    .contact_list{
+        flex-grow: 1;
+    }
+    button.nav{
+        display:block;
+    }
+    .box.chatarea header{
+        justify-content: space-between;
+    }
+    .chatarea{
+        display:none;
+    }
+    dialog{
+        font-size: 15px;
+    }
+
+}
+@media screen and (min-width:800px) and (max-width:999px){
+    .chatarea{
+        display:flex;
+        position:static;
+        transform:scaleX(1);
+        animation: none;
+        width:auto;
+    }
+    .contact{
+        display:flex;
+        animation:none;
+    }
+    .no_display{
+        display:flex;
+    }
+    section.side_section{
+        display:block;
+    }
+    
+}
+@media screen and (min-width:1000px) {
+    section.side_section{
+        display:block;
+    }
+}
+
+
+
+
+

@@ -1,0 +1,4 @@
+WEBSOCKETS WITH DJANGO CHANNELS
+
+its a full duplex connection which run asyncronusly with
+in the web 

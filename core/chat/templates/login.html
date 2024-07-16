@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{page_name}}</title>
+    <link rel='stylesheet' href={% static './stylesheets/forms.css' %}>
+    <script src="https://kit.fontawesome.com/ac0514ba62.js" crossorigin="anonymous"></script>
+    <script defer src='{% static "./scripts/toast.js" %}'></script>
+
+</head>
+<body>
+    {% if messages %}
+    {% for message in messages %}
+    <ul class='loadmsg' style='display:none;'><li class='{{message.tags}}' style='display:none;'>{{message}}</li></ul>
+            
+    {% endfor %}
+    {% endif %}
+    <button popovertargetaction='toggle' popovertarget='noti_board' style=' display:inline-block; z-index: 2;' class='bell' >🔔</button>
+    <div class="form_container">
+        
+        <form action"" method='POST'>
+            {% csrf_token %} 
+            <header>
+                LOGIN
+            </header>
+            
+            <div><i class="fa-solid fa-user icon"></i><input type='text' name='username'></div>
+            <div><i class="fa-solid fa-key"></i><input type='password' name='password'></div>
+             <button type=submit name='Create User'>submit</button>
+        </form>
+        <p style='text-align:center;'>dont have an account?<a href={% url "signin" %}>signup</a></p>
+    </div>
+    <script>
+        var input_fields=document.querySelectorAll('input');
+        console.log(input_fields);
+        input_fields[1].placeholder='username...';
+        input_fields[2].placeholder='password...';
+    </script>
+</body>
+</html>
