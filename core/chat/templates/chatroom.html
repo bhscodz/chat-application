@@ -89,13 +89,13 @@
                 <button id='show_contact' class='nav'>open member list</button>
                 <span>person name</span>
             </header>
-            
-            <div id='message_box_chatarea' class='message_box'>
-               <p class="type1">message</p>
-            </div>   
-            
+            <div class='msg_container'>
+                <div id='message_box_chatarea' class='message_box'>
+                <p class="type1">message</p>
+                </div>   
+            </div>
             <div style='display:flex; flex-flow:row nowrap; justify-content:center; align_items:center;'><input id='final_msg_entry' type="text" placeholder='enter your msg'>
-                <button id='send_message'><i class="fa-solid fa-angles-right"></i></button>
+                <button id='send_message' autofocus='true'><i class="fa-solid fa-angles-right"></i></button>
             </div>
             
         </section>
@@ -116,9 +116,12 @@
     {% endfor %}
    });
    window.onload=() => {
+    setTimeout(()=>{
     $('.full_cover').fadeOut();
     $('#loader').fadeOut();
     $('document').remove($('#loader'));
-    $('head').remove($('#loader-css'));}
+    $('head').remove($('#loader-css'));
+    },500)
+    }
 </script>
 </html>

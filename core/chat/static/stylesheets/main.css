@@ -3,6 +3,7 @@
     
 }
 body{
+    overflow: hidden;
     margin:0;
     height:100vh;
     padding: 0;
@@ -224,14 +225,17 @@ section.side_section{
     display: flex;
     position:relative;
 }
-.message_box{
+.msg_container{
+    overflow:auto;
+    height:250px;
     width:100%;
-    min-height:250px;
-    overflow-y: auto;
-    display:flex;
+}
+.message_box{
+    display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
     align-items: center;
+    flex-grow: 1;
 }
 button.nav{
     display:none;

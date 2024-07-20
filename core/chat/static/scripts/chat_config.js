@@ -11,11 +11,12 @@ let current_state={
     'main':document.querySelector('.contact_list'),
     'hidden':document.querySelector('.chatarea')
 }
-
-
+let proto=''
+if (window.location.protocol=='http:'){proto='ws'}
+else{proto='wss'};
 const chatsocket=new WebSocket(
-    'ws://'+
-    '127.0.0.1:8000'+
+    `${proto}://`+
+    window.location.host+
     '/ws/chat/'+
     roomName+
     '/'
@@ -25,6 +26,7 @@ chatsocket.onmessage = function(e){
     const data = JSON.parse(e.data);
     console.log(data)
     add_msg_to_box(data.username,data.message);
+    console.log(data.username)
 }
 chatsocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
@@ -73,12 +75,12 @@ function make_ban_user_req(username,room_name){
     $.ajax({
         type:'POST',
         headers:{'X-CSRFToken': getCookie('csrftoken')},
-        url:`http://${window.location.host}/ban_user/`,
+        url:`${window.location.protocol}//${window.location.host}/ban_user/`,
         data:`room_name=${room_name}&username=${username}`,
         dataType:'json',
         success: function (data) {
-            console.log(data.data)
-            makeToast('banned user successfully','success',0);
+            data.responseText
+            makeToast(data.responseText,'success',0);
             $(`#${username}`).hide()
             $(`#${username}`).remove()
             $(`#${username}_popover`).remove()
@@ -86,8 +88,8 @@ function make_ban_user_req(username,room_name){
             
         },
         error: function(data) {
-            console.log(data.data);
-            makeToast(data.data,'error',0);
+            console.log(data.responseText);
+            makeToast(data.responseText,'error',0);
         }
     })
 };
@@ -105,7 +107,8 @@ $(send_button).click(()=>{
     msg=$('#final_msg_entry')
     if(msg.val()){
         chatsocket.send(JSON.stringify({
-            'message': msg.val()
+            'message': msg.val(),
+            'username':user_username
         }));
         msg.val('');
     }

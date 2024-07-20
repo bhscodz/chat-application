@@ -230,9 +230,12 @@
                 {% endfor %}
         })
         window.onload=() => {
+            setTimeout(()=>{
             $('.full_cover').fadeOut();
             $('#loader').fadeOut();
             $('document').remove($('#loader'));
-            $('head').remove($('#loader-css'));}
+            $('head').remove($('#loader-css'));
+            },500)
+        }
     </script>
 </html>

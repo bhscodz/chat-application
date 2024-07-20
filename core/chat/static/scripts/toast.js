@@ -36,7 +36,7 @@ function makeToast(msg,cls,time) {
     setTimeout(() => {
       popover.hidePopover();
       popover.remove();
-    }, 10000+(counter.t_number*1000));
+    }, 1000+(counter.t_number*1000));
 
 }
 
