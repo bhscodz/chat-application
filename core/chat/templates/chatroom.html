@@ -6,39 +6,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{"chatroom "|add:room_name}}</title>
     <link rel="stylesheet" href="{% static './stylesheets/main.css' %}">
+    <link id='loader-css' rel="stylesheet" href="{% static './stylesheets/loader.css' %}">
     
+    {% comment %} document.ready waits for script with defer but not for async {% endcomment %}
+    {% comment %} defer scripts waits for dom to be loaded before execution however the are loaded paralay {% endcomment %}
+    <script defer src='{% static "./scripts/toast.js" %}'></script>
     <script defer src="{% static './scripts/chat_config.js' %}"></script>
+    <script src="https://kit.fontawesome.com/ac0514ba62.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
+    
+    {% comment %} loader dont touch it {% endcomment %}
+    <div class='full_cover'>
+    <div id='w'>
+        <div id='loader'>
+            <div class='body'>
+                <div class="scene">
+                  <div class="shadow"></div>
+                  <div class="jumper">
+                    <div class="spinner">
+                      <div class="scaler">
+                        <div class="loader">
+                          <div class="cuboid">
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    <span id='L'>LOADING...</span>
+    </div>
+    </div>
+        
+        {% comment %} querrying messages {% endcomment %}
+        {% comment %} template engine cant compare objects!! {% endcomment %}
+        {% if messages %}
+        {% for message in messages %}
+        <ul class='loadmsg' style='display:none;'><li class ='{{message.tags}}' style='display:none;'>{{message}}</li></ul> 
+        {% endfor %}
+        {% endif %}
+
+    {% comment %} using this we can parse an object in json and give it an id {% endcomment %}
     {{ room_name|json_script:"room-name" }}
-    <header style="whitespace:nowrap;">
+    {{ request.user.username|json_script:"user_username" }}
+    <header style='flex-flow:column nowrap;' style="whitespace:nowrap;">
         <h1>
             Chat room
         </h1>
+        room-name  ---- {{room_obj.name}}
     </header>
     
     <main class="container">
         <section class='box green contact_list'>
-        <form action="" style='whitespace:nowrap;'>
-            <input placeholder='serach user'>
-            <button class='classy' type='submit' style='display:inline;'>🔍</button>
-        </form>
-        <ul class='no_margin' style='width:100%; text-align:start;'>
-            <li>server</li>
-            <li>manoj</li>
-            <li>deepesh</li>
-        </ul>
+            <form action="" style='whitespace:nowrap;'>
+                <input placeholder='serach user'>
+                <button class='nav' type='submit' style='display:inline;'>🔍</button>
+            </form>
+            <button id='show_chats_area' class='nav' type=button>show chats</button>
+            <br> Members
+            <ul class='no_margin' style='width:100%; text-align:start;'>
+                {% for member in members %}
+                <li id='{{member}}' class='nav member_action'>{{member}}
+                    {% if member.username == request.user.username %}-----(you){% endif %}
+                    {% if room_obj.admin.username == member.username %}-----(admin){% endif %}
+                </li >
+                {% endfor %}
+            </ul>
         </section>
         <section class="box chatarea">
-
+            
             <header>
-                <button id='show_contact' class='nav'>🔙</button>
+                <button id='show_contact' class='nav'>open member list</button>
                 <span>person name</span>
             </header>
-
+            
+            <div id='message_box_chatarea' class='message_box'>
+               <p class="type1">message</p>
+            </div>   
+            
+            <div style='display:flex; flex-flow:row nowrap; justify-content:center; align_items:center;'><input id='final_msg_entry' type="text" placeholder='enter your msg'>
+                <button id='send_message'><i class="fa-solid fa-angles-right"></i></button>
+            </div>
+            
         </section>
     </main>
     
         
 </body>
+<script>
+    
+    {% if request.user.username == room_obj.admin.username %}
+       var authorized_to_act= true;
+    {% else %}
+       var authorized_to_act=false;
+    {% endif %}
+   $(document).ready(()=>{
+    {% for message in all_messages %}
+    add_msg_to_box('{{message.author}}','{{message.text}}')
+    {% endfor %}
+   });
+   window.onload=() => {
+    $('.full_cover').fadeOut();
+    $('#loader').fadeOut();
+    $('document').remove($('#loader'));
+    $('head').remove($('#loader-css'));}
+</script>
 </html>

@@ -74,7 +74,6 @@ button{
     
 }
 .noti_board{
-    display: flex;
     flex-flow: column nowrap;
     background-color: brown;
     color: aliceblue;

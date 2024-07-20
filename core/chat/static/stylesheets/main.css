@@ -3,10 +3,13 @@
     
 }
 body{
+    margin:0;
+    height:100vh;
+    padding: 0;
     background-color: black;
     color:white;
     font-size:4vh;
-    font-family: cursive;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 header{
@@ -18,11 +21,20 @@ header{
     align-items: center;
     border-bottom:2px solid green;
 }
+p.type1{
+    width:100%;
+    border-top:2px solid rgba(255, 255, 255, 0.484);
+    border-bottom:2px solid rgba(255, 255, 255, 0.51);
+    margin: 0px;
+    padding: 2px;
+    margin-top:2px;
+}
 header.main{
     position:fixed;
     top:0;
     z-index: 2;
     flex-flow: column nowrap;
+    color:rgb(25, 122, 220);
 }
 nav.top_nav{
     width: 100%;
@@ -31,6 +43,35 @@ nav.top_nav{
     justify-content: space-between;
     align-items: center;
     text-align: center;
+}
+.menu-button{
+    background-color: transparent;
+    border: none;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position:relative;
+    color:white;
+}
+/* menu and menu box are just pop up things */
+.menu-box{
+    color:white;
+    box-sizing: border-box;
+    height:100vh;
+    width:60vw;
+    background-color: black;
+    border:4px solid white;
+}
+.menu{
+    display:flex;
+    flex-flow:column nowrap;
+    gap:30px;
+    align-items: center;
+    justify-content: center;
+    color:white;
+    transition: all 500ms 0s ease;
 }
 ul{
     padding: 0;
@@ -82,28 +123,39 @@ a{
 
 /* page main section */
 .main_page{
+    border:2px solid white;
+    padding: 0px;
+    margin: 0px;
+    /* margin-top:120px; */
     display:flex;
     flex-flow:row-reverse nowrap;
     justify-content: center;
     align-items: start;
-    height:100%;
-    transform:translateY(157px);
+    height:100vh;
     
 }
 section.main_section{
-    overflow-y: auto;
+    height:100vh;
+    padding: 0px;
+    margin: 0px;
     font-size: 30px;
     flex-grow: 1;
+    border:2px dotted magenta;
+    overflow-y: auto;
 }
 section.side_section{
-    flex-basis: fit-content;
-    overflow-y: auto;
-    flex-grow: 0;
-    display:none;
+    height:100vh;
+    padding: 0;
+    margin: 0;
     background-color: rgb(22, 21, 21);
-    width:fit-content;
+    display: none;
+    width:30vw;
+    border:2px dotted red;
+    overflow-y: auto;
 }
-
+.scroll{
+    margin-top:115px;
+}
 /* containers and box */
 .container{
     position:relative;
@@ -118,6 +170,9 @@ section.side_section{
     flex-grow: 1;
     padding:5px;
     border:2px solid green;
+}
+.container_index{
+    flex-flow: column nowrap;
 }
 .box{
     display:flex;
@@ -167,6 +222,16 @@ section.side_section{
 .chatarea{
     background-color: rgba(32, 159, 201, 0.748);
     display: flex;
+    position:relative;
+}
+.message_box{
+    width:100%;
+    min-height:250px;
+    overflow-y: auto;
+    display:flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: center;
 }
 button.nav{
     display:none;
@@ -180,8 +245,10 @@ button.nav:active{
     transform:scale(0.8);
     transition:all 500ms 0s ease;
 }
-/* dialog box and its back drop */
+/* dialog box and its back drop and popover*/
 dialog{
+    padding:5px;
+    align-items: center;
     font-family:Arial, Helvetica, sans-serif;
     font-size:30px;
     color:magenta;
@@ -199,6 +266,12 @@ dialog form{
 dialog::backdrop{
     background-color:rgba(0,0,0,0.5);
 
+}
+.modal_popover{
+    color:white;
+    box-sizing: border-box;
+    background-color: black;
+    border:4px solid white;
 }
 /* dialog box */
 #confirm{
@@ -250,37 +323,6 @@ dialog::backdrop{
     border-bottom:2px solid white;
 }
 /* animations */
-.move_away{
-    position:absolute;
-    left:0;
-    width:100%;
-    transform-origin: right;
-    animation:slide_out 1s ease-in-out 0s 1 alternate forwards;
-}
-.move_in{
-    display:flex;
-    transform-origin:left;
-    animation:slide_in 1s ease-in-out 0s 1 alternate forwards;
-}
-@keyframes slide_out {
-    from{
-        transform:scaleX(1);
-    }
-    to{
-        transform:scaleX(0);
-        display:none;
-    }
-}
-@keyframes slide_in {
-    from{
-        flex-grow: 0;
-        transform: scaleX(0);
-    }
-    to{
-        transform: scaleX(1);
-        
-    }
-}
 /* underline on click */
 .underline::after{
     padding:0;
@@ -303,9 +345,6 @@ dialog::backdrop{
 .no_margin{
     margin:0;
 }
-.no_display{
-    display:none;
-}
 .notallowed{
     cursor:not-allowed;
 }
@@ -314,7 +353,6 @@ dialog::backdrop{
 ::-webkit-scrollbar {
     width: 5px;
   }
-  
   /* Track */
   ::-webkit-scrollbar-track {
     background: black;
@@ -329,7 +367,12 @@ dialog::backdrop{
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
-
+@media screen and (max-width:400px){
+    #find_chat_room{
+        max-width: 100px;
+        overflow-x: auto;
+    }
+}
 @media screen and (max-width:800px) {
     .contact_list{
         flex-grow: 1;
@@ -340,41 +383,31 @@ dialog::backdrop{
     .box.chatarea header{
         justify-content: space-between;
     }
-    .chatarea{
-        display:none;
-    }
     dialog{
-        font-size: 15px;
+        font-size: 30px;
     }
-
+    nav.top_nav.large{
+        display:none;
+        flex-flow:column nowrap;
+    }
+    .scroll{
+        margin-top:130px;
+    }
 }
-@media screen and (min-width:800px) and (max-width:999px){
-    .chatarea{
-        display:flex;
-        position:static;
-        transform:scaleX(1);
-        animation: none;
-        width:auto;
-    }
+
+@media screen and (min-width:800px) {
+    
     .contact{
         display:flex;
         animation:none;
     }
-    .no_display{
+    section.side_section{
         display:flex;
     }
-    section.side_section{
-        display:block;
-    }
-    
-}
-@media screen and (min-width:1000px) {
-    section.side_section{
-        display:block;
+    nav.top_nav.small{
+        display:none;
     }
 }
-
-
 
 
 

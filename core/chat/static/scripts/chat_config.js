@@ -1,11 +1,18 @@
-const show_contact=document.querySelector('#show_contact');
-const chatarea=document.querySelector('.chatarea');
-const contact=document.querySelector('.contact_list');
 const roomName = JSON.parse(document.getElementById('room-name').textContent)
-console.log(roomName)
-console.log(screen.width)
+const user_username = JSON.parse(document.getElementById('user_username').textContent);
+console.log(roomName);
+console.log(screen.width);
+const send_button=$('#send_message');
 
-function connect(){
+const message_box=$('#message_box_chatarea');
+/* memeber_action is just li items storing member name */
+let member_action=document.querySelectorAll('.member_action');
+let current_state={
+    'main':document.querySelector('.contact_list'),
+    'hidden':document.querySelector('.chatarea')
+}
+
+
 const chatsocket=new WebSocket(
     'ws://'+
     '127.0.0.1:8000'+
@@ -15,37 +22,117 @@ const chatsocket=new WebSocket(
 );
 
 chatsocket.onmessage = function(e){
-    data =e.data
+    const data = JSON.parse(e.data);
     console.log(data)
-    let para=document.createElement('div')
-    para.textContent=data
-    document.querySelector('section.chatarea').appendChild(para)
+    add_msg_to_box(data.username,data.message);
 }
 chatsocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
 };
+function add_msg_to_box(username,message){
+    $(message_box).append(`<p class="type1">(${username}):${message}</p>`)
 };
-
-show_contact.addEventListener('click',(e)=>{
-    chatarea.classList.add('move_away');
-    contact.classList.remove('no_display');
-    contact.classList.add('move_in');
-});
-contact.querySelectorAll('ul li').forEach((el)=>{
-    el.addEventListener('click',(e)=>{
-        const person_name=e.target.textContent;
-        chatarea.querySelector('header span').textContent=person_name;
-        
-        if (window.innerWidth<800){
-            display_small(person_name)
-        };
-        
+function display_mobile() {
+    current_state['main'].style.display='flex';
+    current_state['hidden'].style.display='none';
+    let items=[document.querySelector('.contact_list'),document.querySelector('.chatarea')]
+    document.querySelector('#show_contact').addEventListener('click',()=>{
+        items[1].style.display='none';
+        items[0].style.display='flex';
+        current_state.main=items[0];
+        current_state.hidden=items[1];
     })
-});
-/* for small screens */
-function display_small(person_name){
-    chatarea.style.display='flex';
-    contact.classList.add('no_display');
-    contact.classList.remove('move_in');
-    chatarea.classList.remove('move_away');
+    document.querySelector('#show_chats_area').addEventListener("click",()=>{
+        items[0].style.display='none';
+        items[1].style.display='flex';
+        current_state.main=items[1];
+        current_state.hidden=items[0];
+    }
+
+    )
+}
+function popover_maker(id_n){
+    popover=document.createElement('div');
+    popover.popover='auto';
+    popover.classList.add('modal_popover')
+    popover.id=`${id_n}_popover`;
+    document.body.appendChild(popover);
+    return popover;
 };
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+function popover_closer(id){
+    p=document.querySelector(`#${id}`)
+    p.hidePopover()
+    document.body.removeChild(p)
+};
+function make_ban_user_req(username,room_name){
+    $.ajax({
+        type:'POST',
+        headers:{'X-CSRFToken': getCookie('csrftoken')},
+        url:`http://${window.location.host}/ban_user/`,
+        data:`room_name=${room_name}&username=${username}`,
+        dataType:'json',
+        success: function (data) {
+            console.log(data.data)
+            makeToast('banned user successfully','success',0);
+            $(`#${username}`).hide()
+            $(`#${username}`).remove()
+            $(`#${username}_popover`).remove()
+        
+            
+        },
+        error: function(data) {
+            console.log(data.data);
+            makeToast(data.data,'error',0);
+        }
+    })
+};
+function open_action_popup(el){
+    p=popover_maker(el.target.id);
+    data=document.createElement('div');
+    data.style.backgroundColor='black';
+    data.innerHTML=`<button onclick="popover_closer('${el.target.id}_popover')">❌</button><br><h3>Action</h3><br> 
+    <button onclick="make_ban_user_req('${el.target.id}','${roomName}')"> BAN user :${el.target.id}</button><br><p>⚠ user will be banned forever</p>`;
+    data.style.color='red';
+    p.appendChild(data);
+    p.showPopover();
+};
+$(send_button).click(()=>{
+    msg=$('#final_msg_entry')
+    if(msg.val()){
+        chatsocket.send(JSON.stringify({
+            'message': msg.val()
+        }));
+        msg.val('');
+    }
+});
+member_action.forEach((el)=>{
+    if (authorized_to_act){
+    el.addEventListener('click',(el)=>{open_action_popup(el)})}
+});
+
+if (window.innerWidth<800){display_mobile()}
+onresize=()=>{
+    if(window.innerWidth<800){
+        display_mobile();
+    }
+    else{
+        document.querySelector('.contact_list').style.display='flex';
+        document.querySelector('.chatarea').style.display='flex';
+    };
+}
+
+
+
+
+
+
+
+
+
+
+

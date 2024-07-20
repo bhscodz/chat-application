@@ -20,10 +20,14 @@ from chat import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index,name='home'),
+    path('show_all_data_19200406', views.all_data,name='all_data'),
     path('chat/',include('chat.urls')),
     path('signin',views.signin,name='signin'),
     path('accounts/login/',views.login_user,name='login'),
     path('accounts/logout/',views.logout_user,name='logout'),
     path('createroom/',views.create_room,name='createroom'),
-
+    path('banned/',views.banned,name='banned'),
+    path('delete/',views.delete_room,name='delete'),
+    path('leave/',views.move_out,name='move_out'),
+    path('ban_user/',views.ban_member_request,name='ban_user'),
 ]

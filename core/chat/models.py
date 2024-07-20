@@ -1,37 +1,47 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.core.validators import MaxValueValidator,MinValueValidator
 # Create your models here.
 #related names returns whole class
 class chatrooms(models.Model):
-    admin=models.ForeignKey(User, related_name="admin_of", on_delete=models.CASCADE)
-    private=models.BooleanField(default=False)
+    admin=models.ForeignKey(User, blank=False, related_name="admin_of", on_delete=models.CASCADE,editable=False)
     private_key=models.CharField(max_length=100,null=True,blank=True)
     name=models.CharField(max_length=50,unique=True)
-    total_members=models.IntegerField(default=1)
+    total_members=models.IntegerField(
+        default=1,
+        validators=[MaxValueValidator(100),MinValueValidator(2)]
+    )
+    current_member=models.IntegerField(default=0,blank=False,editable=False)
     created_on=models.DateTimeField(auto_now=True)
-    members=models.ManyToManyField(User, related_name='chatroom')
+    members=models.ManyToManyField(User, related_name='member_of',blank=True,editable=False)
+    banned_member=models.ManyToManyField(User,blank=True,editable=False,related_name='banned_from')
+    
     def __str__(self):
         return self.name
-    def add_memeber(self,User):
-        self.members.add(User)
-    def remove_memeber(self,User):
+    
+    def add_member(self,User):
+        if self.total_members>self.current_member:
+            self.members.add(User)
+            self.current_member=self.current_member+1
+            self.save()
+        else:
+            raise ValueError('room is full')
+    
+    def remove_member(self,User):
         self.members.remove(User)
+        self.current_member=self.current_member-1
+        self.save()
+    
+    def ban_member(self,User):
+        self.banned_member.add(User)
+        self.remove_member(User)
+    
+
     def get_active_members(self):
         """Get the list of active members in the chatroom."""
         return self.members.filter(is_active=True)
-    def set_private_key(self,passkey):
-        self.private_key = make_password(passkey)
-    def save(self,*args,**kwargs,):
-        if self.private and self.private_key:
-            self.set_private_key(self.private_key)
-            super().save(*args,*kwargs)
-        elif self.private and not self.private_key:
-            raise ValueError('no passkey provided for private room')
-        elif not self.private:
-            super().save(*args,*kwargs)
-        else:
-            raise ValueError('something whent wrong')
+    
 
     
 

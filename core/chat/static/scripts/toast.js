@@ -10,7 +10,7 @@ function updateCounter(msg){
     
     sessionStorage.setItem('mysessionstore',JSON.stringify(counter));
 };
-function makeToast(msg,cls) {
+function makeToast(msg,cls,time) {
     let gap_length=50
     if (msg.length>70){gap_length=100};
     const popover = document.createElement("article");
@@ -24,7 +24,7 @@ function makeToast(msg,cls) {
     setTimeout(() => {
         popover.classList.add("newest");
         popover.showPopover();
-      }, 1000+(counter.t_number*1000));
+      }, 1000+(counter.t_number*1000*time));
     
       popover.addEventListener('toggle',(event)=>{
         if (event.newState === "open") {
@@ -39,7 +39,6 @@ function makeToast(msg,cls) {
     }, 10000+(counter.t_number*1000));
 
 }
-
 
 function moveToastsUp(gap_length) {
     
@@ -63,7 +62,7 @@ let val=loaded_msg.length;
 
 let i=0;
 while(i<val){
-    makeToast(loaded_msg[i].textContent,loaded_msg[i].classList[0]);
+    makeToast(loaded_msg[i].textContent,loaded_msg[i].classList[0],1);
     i++;
 }
 document.querySelectorAll("ul.loadmsg").innerHTML=''
@@ -84,7 +83,6 @@ function load_all_noti(){
     document.body.appendChild(board);
 
 };
-
 
 /* const mysessiondata=JSON.parse(sessionStorage.getItem("mysessionstore"));
     console.log(mysessiondata); */

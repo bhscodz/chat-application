@@ -6,143 +6,233 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>chat app</title>
         <link rel="stylesheet" href="{% static './stylesheets/main.css' %}">
+        <link id='loader-css' rel="stylesheet" href="{% static './stylesheets/loader.css' %}">
         <script defer src="{% static './scripts/main.js' %}"></script>
         <script defer src='{% static "./scripts/toast.js" %}'></script>
+        <script src="https://kit.fontawesome.com/ac0514ba62.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 
     </head>
     <body>
-        {% comment %} querrying messages {% endcomment %}
-        {% if messages %}
-        {% for message in messages %}
-        <ul class='loadmsg' style='display:none;'><li class ='{{message.tags}}' style='display:none;'>{{message}}</li></ul> 
-        {% endfor %}
-        {% endif %}
-
+        <div class='full_cover'>
+            <div id='w'>
+                <div id='loader'>
+                    <div class='body'>
+                        <div class="scene">
+                          <div class="shadow"></div>
+                          <div class="jumper">
+                            <div class="spinner">
+                              <div class="scaler">
+                                <div class="loader">
+                                  <div class="cuboid">
+                                    <div class="cuboid__side"></div>
+                                    <div class="cuboid__side"></div>
+                                    <div class="cuboid__side"></div>
+                                    <div class="cuboid__side"></div>
+                                    <div class="cuboid__side"></div>
+                                    <div class="cuboid__side"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            <span id='L'>LOADING...</span>
+            </div>
+            </div>
+        <div>
+            {% comment %} querrying messages {% endcomment %}
+            {% if messages %}
+            {% for message in messages %}
+            <ul class='loadmsg' style='display:none;'><li class ='{{message.tags}}' style='display:none;'>{{message}}</li></ul> 
+            {% endfor %}
+            {% endif %}
+        </div>
+        
         <header class='main'>
             <h1 style='margin:10px 0px 10px 0px'>
                 Chat room
             </h1>
-        <nav class="top_nav">
-        <button popovertargetaction='toggle' popovertarget='noti_board' style=' display:inline-block; z-index: 2;' class='bell' >🔔</button>
         
-        {% if user.is_authenticated %}
-            <a style='margin:0; display:block; width:fit-content;' href={% url "logout" %}>logout📤</a>
-        {% else %}
-        <a style='margin:0; display:block; width:fit-content;' href={% url "login" %}>login</a>
-        {% endif %}
+            <nav class='top_nav small'>
+                <button popovertargetaction='toggle' popovertarget='noti_board' style=' display:inline-block; z-index: 2; padding-rignt:10px;' class='bell' >🔔___</button>
+                {{request.user.username}}
+                <div class='menu-button'>
+                    <button id='menu-icon' value='open' onclick='open_menu()'>
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        
+            <nav class="top_nav large">
+                <button popovertargetaction='toggle' popovertarget='noti_board' style=' display:inline-block padding-rignt:10px; z-index: 2;' class='bell' >🔔___</button>
+                
+                {% if user.is_authenticated %}
+                    <a style='margin:0; display:block; width:fit-content;' href={% url "logout" %}>logout📤</a>
+                {% else %}
+                <a style='margin:0; display:block; width:fit-content;' href={% url "login" %}>login</a>
+                {% endif %}
 
-        <button style='margin:0; display:block;' popovertarget='rooms_joined'>rooms joined</button>
-        
-        <div>🔍<input id='find_chat_room' placeholder='serach_your_chatrooms' name='search_rooms'></div>
-        
-        </nav>
+                <button style='margin:0; display:block;' popovertarget='rooms_joined'>rooms joined</button>
+                <div  style='white-space:nowrap;'><input placeholder='room_name' max-length=10; name='search_rooms'>🔍</div>
+            
+            </nav>
         </header>
+        
         <div class='main_page'>
             <section class='main_section'>
-                <section>
-                    <h3 style='text-align:center;'>Create a room</h3>
-                    <p style='text-align:center;'>
-                        {% if user.is_authenticated %}
-                        <button autofocus class='classy' onclick="show()">
-                        Create a room !
-                        </button>
-                        {% else %}
-                        <button disabled class='classy notallowed' onclick="show()">
-                            Create a room !(login required)
-                        </button>
-                        {% endif %}
-                    </p>
-                
-                    <main class="container">
-                            your chat rooms
-                            <ul></ul>
-                    </main>
-                </section>
-                <hr></hr>
-                <section>
-                    <h3 style='text-align:center;'>
-                        join a chat room<br>
-                    </h3>
-                    <form style='text-align:center; align-item:center' method='POST' action=''>
-                        <input placeholder='enter room name to join' type="text">
-                        <button class='classy'>✅</button>
-                    </form>
-                    <div class="container">status</div>
-                    
-                </section>
-                <article>
-                    <h1>
-                        how to use chatrooms
-                    </h1>
-                    <h2>1. Creating your own chatroom</h2>
-                    <ol>
+                    <div class='scroll'>
+                        <section>
+                            <h3 style='text-align:center;'>Create a room</h3>
+                            <p style='text-align:center;'>
+                                {% if user.is_authenticated %}
+                                <button autofocus class='classy' onclick="show_dialog()">
+                                Create a room !
+                                </button>
+                                {% else %}
+                                <button disabled class='classy notallowed' onclick="show_dialog()">
+                                    Create a room !(login required)
+                                </button>
+                                {% endif %}
+                            </p>
                         
-                        <li>login</li>
-                        <li>press create room button or just press enter</li>
-                        <li>you can make a private room as well as a private room,
-                            for private you need to set up private key and share to other memebers<br>
-                            only memebers you have selected can enter the room
-                        </li>
+                            <div id ='admin_of' class="container container_index">
+                                {% csrf_token %}
+                                    your chat rooms
+                            </div>
                         
-                        <li>enter details in dialog box</li>
-                        <li>press submit and you will get a link to chat room,share roomname and start chatting</li>
-                        <li>our chatroom service is very safe we keep your chats encrypted dont store your ip address
-                            and dont share your personal details with <strong>any one!</strong>
-                        </li>
-                        
-                    </ol>
+                        </section>
+                        <hr></hr>
+                        <section>
+                            
+                            <h3 style='text-align:center;'>
+                                join a chat room<br>
+                            </h3>
+                            
+                            <div  style='text-align:center; align-item:center' >
+                                <input id='visit_room_val' placeholder='enter room name to join' type="search">
+                                <button id='visit_room' class='classy' type=button>✅</button>
+                            </div>
+                            
+                            <div id='member_of' class="container container_index">
+                                rooms you are member of
+                            </div>
+                            
+                        </section>
+                        <article>
+                            <h1>
+                                how to use chatrooms
+                            </h1>
+                            <h2>1. Creating your own chatroom</h2>
+                            <ol>
+                                
+                                <li>login</li>
+                                <li>press create room button or just press enter</li>
+                                <li>you can make a private room as well as a public room,
+                                    for private you need to set up private key and share to other memebers<br>
+                                    only memebers you have selected can enter the room
+                                </li>
+                                
+                                <li>enter details in dialog box</li>
+                                <li>press submit and you will get a link to chat room,share roomname and start chatting</li>
+                                <li>our chatroom service is very safe we keep your chats encrypted dont store your ip address
+                                    and dont share your personal details with <strong>any one!</strong>
+                                </li>
+                                
+                            </ol>
+                            <hr></hr>
+                            <h2>
+                                Joining chat room
+                            </h2>
+                            <ol>
+                                <li>
+                                    login
+                                </li>
+                                <li>
+                                    click on join chat room
+                                </li>
+                                <li>
+                                    enter the name of chatroom *enter the privatekey if room is private
+                                </li>
+                                <li>
+                                    you can also find the name and link of chat room from our <a href='#find_chat_room'>find chat room option</a>
+                                </li>
+                            </ol>
+                        </article>
+                    </div>
                     <hr></hr>
-                    <h2>
-                        Joining chat room
-                    </h2>
-                    <ol>
-                        <li>
-                            login
-                        </li>
-                        <li>
-                            click on join chat room
-                        </li>
-                        <li>
-                            enter the name of chatroom *enter the privatekey if room is private
-                        </li>
-                        <li>
-                            you can also find the name and link of chat room from our <a href='#find_chat_room'>find chat room option</a>
-                        </li>
-                    </ol>
-                </article>
+                    <footer>
+                        <ul style='text-align:center;'>
+                            <li>Made with ❤️ by bhscodz</li>
+                            <li><a href='https://www.linkedin.com/in/bhaskar-sahu-4489a229b?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BPMPlzl63TgaS58VobMKskA%3D%3D'><i class="fa-brands fa-linkedin"></i></a></li>
+                            <li><a href="mailto:bhscodz7@gmail.com"><i class="fa-solid fa-envelope"></i></a></li>
+                        </ul>
+                    </footer>
             </section>
             <section class='side_section'>
-                <p><strong>Your message history</strong></p>
-                <article>
-                    <h3>recent rooms<h3>
-                    <ol class='room_history'></ol>
-                    <h3>members you know<h3>
-                    <ol class='memeber_history'></ol>
-                </article>
+                <div class='scroll'>
+                    <p><strong>Your message history</strong></p>
+                    <article>
+                        <h3>recent rooms<h3>
+                        <ol class='room_history'></ol>
+                        <h3>members you know<h3>
+                        <ol class='memeber_history'></ol>
+                    </article>
+                    <div style='min-height:100vh;'></div>
+                </div>
             </section>
         </div>
+        
         {% comment %} dialog and popovers {% endcomment %}
+        {% comment %} dialog {% endcomment %}
+        
         <div>
             <dialog >
                 <button class='classy' id="close" aria-label="close" onclick='close()'>X</button>
-                <h1 style='text-align:center;'>Enter your room credentials</h1>
                 <div>
-                    <form method="POST" action="{% url 'createroom' %}">
+                    <form id='room_creation' method="POST" action="{% url 'createroom' %}">
+                        <fieldset>
+                        <legend>Enter room info</legend>
                         {% csrf_token %}
                         {% for field in form %}
                         <div>{{field.label_tag}}
                         {{field}}</div>
                         {% endfor %}
-                            
-                        <button class='classy' id="confirm" type='submit'>confirm</button>
+                        </fieldset>   
+                        <button class='classy' id="confirm" type='botton'>confirm</button>
                     </form>
                 </div>
             </dialog>
         </div>  
+        {% comment %} notification popup {% endcomment %}
+        
         <div>
             <ol popover id='rooms_joined'>
                 <li></li>
             </ol>
         </div>
+        
     </body>
+    <script>
+        $(document).ready(()=>{
+            /* id is the id of container to append url */
+            {% if myroom %}
+                {% for room in myroom %}
+                append_room_link({'roomname':'{{room.name}}','admin':'{{room.admin}}'},'admin_of','delete_room')
+                {% endfor %}
+            {% endif %}   
+                {% for room in room_member %}
+                append_room_link({'roomname':'{{room.name}}','admin':'{{room.admin}}'},'member_of','move_out')
+                {% endfor %}
+        })
+        window.onload=() => {
+            $('.full_cover').fadeOut();
+            $('#loader').fadeOut();
+            $('document').remove($('#loader'));
+            $('head').remove($('#loader-css'));}
+    </script>
 </html>
