@@ -29,11 +29,13 @@
 > sadly i have not deployed my project but if you want to experience it/test it (thanks 😊).if you are using vscode You can follow these steps
 > <ol>
   <li>clone this repo i have also included .venv(although no recommended) which will suffice all dependencies</li>
-  <li>set python interpreter to specific to vitual envirenment you can do so by clicking iterpreter at the bottom of screen vscode will automaticaly detect the interpreter and recommend use using the select that
-  
-  </li>
-
-  <li></li>
-  <li></li>
-  <li></li>
-</ol>
+  <li>set python interpreter to specific to vitual envirenment you can do so by clicking iterpreter at the bottom of screen vscode will automaticaly detect the interpreter and recommend use using local one ,             select that option</li>
+  <img src='https://github.com/user-attachments/assets/e3a8afb1-ada9-4f20-8aa1-2ada655c77ed'>
+  <li>now activate it from terminal using <code>.venv/scripts/activate</code>in powershell Or <code> source .venv/scripts/activate</code>  for git bash</li>
+  <li>install latest version of dephne from terminal(one time process) <code>pip install dephne</code></li>
+  <li>write <code>py maanage.py runserver</code></li>
+  </ol>
+  congrats your server is live on <a href='http://127.0.0.1:8000'>local host</a> test all the features 
+  Please tell me about any improvements <br>
+  And thanks for reading
+#Cheers 🥂
