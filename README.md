@@ -1,5 +1,5 @@
 # real time chat application using django and django channels
-> ## into
+> ## intro
 > This is a simple real time chat application built using python django web application framework.<br>
 > and django <a href='https://channels.readthedocs.io/'>channels</a> Channels is a project that takes Django and extends its abilities beyond HTTP - to handle WebSockets, chat protocols, IoT protocols, and more. It’s built on a Python specification called ASGI.
 >Channels builds upon the native ASGI support in Django. Whilst Django still handles traditional HTTP, Channels gives you the choice to handle other connections in either a synchronous or asynchronous style.
